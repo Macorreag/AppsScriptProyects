@@ -16,6 +16,8 @@ function doGet(e) {
  */
 
 const doPost = (request = {}) => {
+  // Si no hace match los valores quedan en null
+  // en los parameters vienen los querystring una sola no multiples
   let { parameter, postData: { contents, type } = {} } = request;
   try{
       var { action, value } = JSON.parse(contents);
@@ -32,6 +34,9 @@ const doPost = (request = {}) => {
 
   try{
     switch (action) {
+      case "Array":
+        //Conversion a array
+        return sendJSON_({status: 200, result:  split_string(value), value: value, formated: JSON.stringify(split_string(value)) });
       case "base64":
         //Conversion de un String en Base64
         let base_64 = Utilities.base64Encode(value)
@@ -74,4 +79,117 @@ function sendJSON_(jsonResponse){
   return ContentService
   .createTextOutput(JSON.stringify(jsonResponse))
   .setMimeType(ContentService.MimeType.JSON); 
+}
+
+function split_string(text =  ""){
+
+  //const regex = /[^@]+(@|$)/gm; 
+
+  const regex = /(?<previous>[^@]*)(?<nickname>@[^@\s&]+)(?<name_nickname>&*[^@\s&]*)(?<end>[^@]*)/g;
+
+
+
+  //let text = "Estoy preguntando si puedo jugar @baloncesto en @cali la bella ciudad";
+  //let text = " Estoy preguntandosipuedo ";
+
+  //let text = "@mundo Estoy pregu@ntando si puedo jugar @baloncesto en @cali la bella @ciudad";
+
+
+
+
+
+  let matches_array = [];
+
+
+  if (!text.includes('@')){
+    //Texto no tiene arrobas
+      return [{
+        text: text,
+        userDefined: true,
+      }];
+  } 
+
+  while ((array1 = regex.exec(text)) !== null) {
+    //console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);
+    let json_match_nickname = {};
+    let previous = {};
+    let end = {}
+
+    Logger.log(array1.groups)
+
+    if (array1.groups.previous == "" && array1.groups.end == ""){
+      json_match_nickname = {
+        userDefined: true,
+        entityType: `@${array1.groups.name_nickname.substring(1)}`,
+        alias: array1.groups.name_nickname.substring(1),
+        text: array1.groups.nickname.substring(1),
+      }
+      matches_array.push(json_match_nickname);
+    }else if(array1.groups.previous == ""){
+      json_match_nickname = {
+        userDefined: true,
+        entityType: `@${array1.groups.name_nickname.substring(1)}`,
+        alias: array1.groups.name_nickname.substring(1),
+        text: array1.groups.nickname.substring(1),
+      }
+      matches_array.push(json_match_nickname);
+
+      end = {
+        text: array1.groups.end,
+        userDefined: true,
+      }
+
+      matches_array.push(end);
+    }else if(array1.groups.end == ""){
+
+      previous = {
+        text: array1.groups.previous,
+        userDefined: true,
+      }
+      matches_array.push(previous);
+
+
+      json_match_nickname = {
+        userDefined: true,
+        entityType: `@${array1.groups.name_nickname.substring(1)}`,
+        alias: array1.groups.name_nickname.substring(1),
+        text: array1.groups.nickname.substring(1),
+      }
+      matches_array.push(json_match_nickname);
+
+    }else{
+      previous = {
+        text: array1.groups.previous,
+        userDefined: true,
+      }
+      matches_array.push(previous);
+
+
+      json_match_nickname = {
+        userDefined: true,
+        entityType: `@${array1.groups.name_nickname.substring(1)}`,
+        alias: array1.groups.name_nickname.substring(1),
+        text: array1.groups.nickname.substring(1),
+      }
+      matches_array.push(json_match_nickname);
+      
+      end = {
+        text: array1.groups.end,
+        userDefined: true,
+      }
+
+      matches_array.push(end);
+    }
+
+  }
+  
+  
+  return matches_array;
+}
+
+
+function test(){
+  //Logger.log(split_string("Estoy preguntando si puedo jugar @balonc&esto en @cali la bella ciudad"));
+  Logger.log(split_string("Hola estoy en @Arequipa&City-DF y me gusta jugar @Tenis&Sport-DF")); 
+
 }
