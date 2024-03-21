@@ -1,0 +1,27 @@
+<script>
+    
+    document.getElementById("submitForm").addEventListener("click",doStuff);
+    
+    function doStuff(){
+    
+          /*Datos ingresados por el usuario en el formulario como JSON*/
+          var submittedForm = {};
+          submittedForm.cedula = document.getElementById("cedula").value;
+          submittedForm.fullName = document.getElementById("fullName").value;
+          submittedForm.phone = document.getElementById("phone").value;
+          submittedForm.email = document.getElementById("email").value;
+          submittedForm.whatsappAuthorization = document.getElementById("whatsappAuthorization").value;
+          submittedForm.formQuery = document.getElementById("formQuery").value;
+
+          /*Enviar datos a función de GSheets*/
+          google.script.run.userClicked(submittedForm);
+          
+          
+          document.getElementById("cedula").value = "";
+          document.getElementById("fullName").value = "";
+          document.getElementById("phone").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("whatsappAuthorization").value = "";
+          document.getElementById("formQuery").value = "";
+    }
+</script>
