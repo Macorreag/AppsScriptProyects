@@ -1,0 +1,86 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    </head>
+    <body>
+      <!-- <div class="container"> -->
+        <div class="row">
+          <h1 class="center">¿Donde te robaron la bici🚲?</h1>
+          <div class="col s12">
+            <iframe src="https://macorreag.github.io/bikeOpen/"
+              class="embed-responsive-item"
+              width="100%"
+              height="250px"
+              frameborder="0"
+              id="test"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <form id="bicyclesReport" class="col s12">
+
+            <div class="row">
+              <!--
+              <div class="input-field col s12 m6 l6" >
+                <input placeholder="79940745" id="cedula" name="cedula" step="any" type="number" class="validate">
+                <label for="cedula">Número de cedula</label>
+              </div>
+              -->
+              <div class="input-field col s12 m6 l6">
+                <input id="descriptionRobbery" name="descriptionRobbery" type="text" class="validate">
+                <label for="descriptionRobbery">Descripción del Robo</label>
+              </div>
+
+              <div class="input-field col s12 m8 l3">
+                <input id="datePicker" name="robberyDate" type="text" class="datepicker" >
+                <label for="datePicker">¿Cuando te robaron la bici?</label>
+              </div>
+              
+              <div class="input-field col s6 m4 l3">
+                <input id="robberyTime" type="text" name="robberyTime" class="timepicker">
+                <label for="robberyTime">¿A que hora te robaron?</label>
+              </div>
+
+              <div class="input-field col s6">
+                <input id="bicycleBrands" name="bicycleBrands" type="text"  class="autocomplete" pattern="[A-Za-z]{0.10}" >
+                <label for="bicycleBrands">Marca de tú Bicicleta</label>
+              </div>
+
+
+              <div class="input-field col s6 m6">
+                <input id="numberThieves" name="numberThieves" type="number" value="1" min="1" />
+                <label for="numberThieves">¿Cuantos ladrones?</label>
+              </div>
+
+              <div class=" col s3">
+                  <input id="colorBike" name="colorBike" type="color" value="#ff0000">
+                  <label for="colorBike">Color de tú Bici</label>
+              </div>
+              
+              <div class="input-field col s12 m6 ">
+                <input id="mobilityThieves" name="mobilityThieves" type="text"  class="autocomplete">
+                <label for="mobilityThieves">Los ladrones se movilizaban en</label>
+              </div>
+            </div>
+            <div class="row center-align">
+              <button class="btn waves-effect waves-light" type="submit" name="action">Enviar Reporte</button>
+            </div> 
+          </form>
+          <?!= WebComponents.getAttribution() ?>
+        </div>
+
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- FormControllerContent -->
+    <?!= HtmlService.createHtmlOutputFromFile("datePicker").getContent(); ?>
+    <!-- Styles -->
+    <?!= HtmlService.createHtmlOutputFromFile("style").getContent(); ?>
+
+
+    </body>
+  </html>

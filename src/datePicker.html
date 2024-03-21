@@ -1,0 +1,113 @@
+<script>
+  var datePicker = document.getElementById('datePicker')
+  var container = document.getElementById('picker')
+  const bicyclesReport = document.getElementById("bicyclesReport");
+  
+
+  /*handle Data submit Form */
+
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    /* Obtain Values from Form*/
+    var value = Object.fromEntries(data.entries());
+    /*Extraer los datos de ubicación en Iframe
+    TODO: Se puede hacer que el iframe envie directamente los cambios dentro del objeto fromEntries
+    */
+    value.test = "test";
+
+    var storageJSON = JSON.parse(localStorage.getItem('data'))
+
+    value.latitude = parseFloat(storageJSON.latitude);
+    value.longitude = parseFloat(storageJSON.longitude);
+   console.log(`Locallatitude: ${value}, Locallongitude: ${storageJSON}`)
+  console.log(storageJSON)
+  
+    /*Enviar datos a función de GSheets*/
+    google.script.run.withSuccessHandler(function(ar)
+    {
+      /*Una vez completado se limpia el formulario*/
+      bicyclesReport.reset()
+    } 
+    ).submitForm(value);
+  }
+
+            
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(datePicker, {
+        container: container,
+    });
+
+    var timer = document.querySelectorAll('.timepicker');
+    var instances = M.Timepicker.init(timer, {
+      defaultTime: 'now',
+      autoClose: true
+    });
+
+
+
+    const messageEle = document.getElementById('message');
+
+    window.addEventListener('message', function(e) {
+            const data = JSON.parse(e.data);
+            
+            //Save in local the JSON data
+            window.localStorage.setItem("data", JSON.stringify(data));
+
+            console.log(`latitude: ${data.latitude}, longitude: ${data.longitude}`)
+      
+    });
+
+    
+    var mobilityThieves = document.querySelector('#mobilityThieves');
+     M.Autocomplete.init(mobilityThieves, {
+        data: {
+          "Moto": null,
+          "Carro": null,
+          "Bicicleta": null,
+          "Caminando": null 
+      }
+    });
+
+
+    var elems = document.querySelector('#bicycleBrands');
+    var instances = M.Autocomplete.init(elems, {
+        data: {
+        "Alubike": null,
+        "Benotto": null,
+        "Bernalli": null,
+        "Cannondale": null,
+        "Canyon": null,
+        "Commencal": null,
+        "DiamondBack": null,
+        "DT-FLY": null,
+        "Gary Fischer": null,
+        "Giant": null,
+        "GT": null,
+        "GW": null,
+        "Inside": null,
+        "Jeep": null,
+        "On-Trail": null,
+        "Optimus": null,
+        "Raleigh": null,
+        "Scott": null,
+        "Specialized": null,
+        "STL": null,
+        "Trek": null,
+        "Venzo": null        
+      }
+    });
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', handleSubmit);
+
+
+  });
+
+
+
+
+
+</script>

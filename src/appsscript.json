@@ -1,0 +1,19 @@
+{
+  "timeZone": "America/Bogota",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "WebComponents",
+        "version": "0",
+        "libraryId": "1rjvMawSAL0ImDGaK_a-BaynrS7pCdABynkgKc4e8VKgVgjmRNS_ZZZid",
+        "developmentMode": true
+      }
+    ]
+  },
+  "webapp": {
+    "executeAs": "USER_DEPLOYING",
+    "access": "ANYONE_ANONYMOUS"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}
