@@ -1,3 +1,20 @@
+/**
+ * 
+ * @param {*} e Contiene los eventos proporcionados del trigger GET de esta API Rest
+ * @returns 
+ */
+function doGet(e) {
+  return sendJSON_(e)
+}
+
+/**
+ * Otra forma de usar el doPost(e)
+ * 
+  function doPost(e){
+    return sendJSON_({hola: "mundo"})
+  }
+ */
+
 const doPost = (request = {}) => {
   let { parameter, postData: { contents, type } = {} } = request;
   try{
